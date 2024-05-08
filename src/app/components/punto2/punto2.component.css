@@ -1,0 +1,16 @@
+ul {
+  list-style: none;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+li {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+li button {
+  width: 50px;
+  height: 50px;
+  border: none;
+}

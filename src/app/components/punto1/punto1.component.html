@@ -1,0 +1,102 @@
+<section class="container">
+  <h2 class="text-center fw-bold text-primary my-5 display-3">
+    Productos relevantes
+  </h2>
+
+  <!-- Lista de productos -->
+  <div class="row gap-3 justify-content-center">
+    @for (producto of productos; track $index) {
+    <div class="card col-12 col-sm-5 col-md-3">
+      <img
+        [src]="producto.img"
+        class="card-img-top img-fluid"
+        [alt]="producto.nombre"
+        [title]="producto.nombre"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ producto.nombre }}</h5>
+        <p class="card-text">
+          {{ producto.descripcion }}
+        </p>
+        <p class="card-text text-muted display-6">
+          {{ producto.precio }}
+        </p>
+        <button class="btn btn-primary" (click)="agregarCarrito(producto)">
+          Añadir al carrito
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- Botón de carrito -->
+    <button
+      class="btn btn-outline-primary position-fixed carrito"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop"
+    >
+      Mi carrito
+      <i class="bi bi-cart-fill"></i>
+    </button>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+              Tu carrito
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <!-- Lista de productos en el carrito -->
+            @for (producto of carrito; track $index) {
+            <div
+              class="producto-carrito d-flex justify-content-between gap-3 mb-3"
+            >
+              <img
+                [src]="producto.img"
+                class="card-img-top img-fluid"
+                [alt]="producto.nombre"
+                [title]="producto.nombre"
+              />
+              <p class="fw-bold">{{ producto.nombre }}</p>
+              <p class="text-muted fs-2">{{ producto.precio }}</p>
+            </div>
+            } @empty {
+            <div class="alert alert-info" role="alert">
+              Aún no has agregado productos a tu carrito
+            </div>
+            }
+            <div class="alert alert-success" role="alert">
+              El total es de: <span class="fw-bold">{{ calcularTotal() }}</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-primary"
+              data-bs-dismiss="modal"
+            >
+              Seguir comprando
+            </button>
+            <button type="button" class="btn btn-primary">Ir a pagar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

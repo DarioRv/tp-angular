@@ -1,0 +1,210 @@
+@switch (estado) { @case ('inicio') {
+<section class="container">
+  <h2 class="text-center text-primary display-3 fw-bold my-5">
+    Selecciona un modo de juego
+  </h2>
+
+  <ul>
+    <li class="px-5 py-3 mb-3 rounded border">
+      <button
+        class="rounded-circle btn btn-primary"
+        (click)="iniciarJuego('vocales')"
+      >
+        <i class="bi bi-play-circle"></i>
+      </button>
+      Contar vocales
+    </li>
+    <li class="px-5 py-3 mb-3 rounded border">
+      <button
+        class="rounded-circle btn btn-primary"
+        (click)="iniciarJuego('consonantes')"
+      >
+        <i class="bi bi-play-circle"></i>
+      </button>
+      Contar consonantes
+    </li>
+    <li class="px-5 py-3 mb-3 rounded border">
+      <button
+        class="rounded-circle btn btn-primary"
+        (click)="iniciarJuego('letras')"
+      >
+        <i class="bi bi-play-circle"></i>
+      </button>
+      Contar letras
+    </li>
+    <li class="px-5 py-3 mb-3 rounded border">
+      <button
+        class="rounded-circle btn btn-primary"
+        (click)="iniciarJuego('silabas')"
+      >
+        <i class="bi bi-play-circle"></i>
+      </button>
+      Contar silabas
+    </li>
+  </ul>
+</section>
+} @case ('jugando') {
+<section class="container">
+  <h2 class="border bg-body-tertiary text-center my-5 text-primary">
+    Cuantas {{ juegoActual.modo }} hay en la palabra:
+    <span class="fw-bold">{{ juegoActual.palabra | uppercase }}</span> ?
+  </h2>
+  <div class="row gap-3 justify-content-center">
+    @for (opcion of juegoActual.opciones; track $index) {
+    <button
+      class="col col-sm-5 rounded display-1 bg-body-teartiary text-center border fw-bold text-warning"
+      (click)="validarOpcion(opcion)"
+    >
+      {{ opcion }}
+    </button>
+    }
+  </div>
+  <div class="mt-5">
+    <ul class="list-group w-25">
+      <li class="list-group-item">
+        Progeso: {{ juegoActual.iteracion + 1 }}/8
+      </li>
+      <li class="list-group-item">Aciertos: {{ juegoActual.aciertos }}</li>
+      <li class="list-group-item">Errores: {{ juegoActual.errores }}</li>
+    </ul>
+    <div
+      class="progress w-25 mx-auto mt-2"
+      role="progressbar"
+      aria-label="Basic example"
+      aria-valuenow="0"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      <div
+        class="progress-bar"
+        [style]="'width:' + (juegoActual.iteracion * 100) / 8 + '%'"
+      ></div>
+    </div>
+  </div>
+  <button
+    class="btn btn-outline-danger mx-auto d-block mt-4"
+    (click)="irAInicio()"
+  >
+    Abandonar juego
+  </button>
+</section>
+} @case ('finalizado') {
+<section>
+  <h2 class="text-center text-primary display-3 fw-bold my-5">
+    Juego Finalizado
+  </h2>
+  <button
+    type="button"
+    class="btn btn-primary mx-auto d-block mt-5"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+  >
+    Ver resultados
+  </button>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title fs-5" id="exampleModalLabel">
+            Tus resultados
+          </h4>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group w-100">
+            <li class="list-group-item">
+              Aciertos: {{ juegoActual.aciertos }}
+            </li>
+            <li class="list-group-item">Errores: {{ juegoActual.errores }}</li>
+          </ul>
+          <div class="progress-stacked mt-3">
+            <div
+              class="progress"
+              role="progressbar"
+              aria-label="Segment one"
+              aria-valuenow="15"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [style]="
+                'width: ' +
+                (juegoActual.aciertos /
+                  (juegoActual.aciertos + juegoActual.errores)) *
+                  100 +
+                '%'
+              "
+            >
+              <div class="progress-bar bg-success">
+                {{
+                  (juegoActual.aciertos /
+                    (juegoActual.aciertos + juegoActual.errores)) *
+                    100
+                }}
+                %
+              </div>
+            </div>
+            <div
+              class="progress"
+              role="progressbar"
+              aria-label="Segment two"
+              aria-valuenow="30"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              [style]="
+                'width: ' +
+                (juegoActual.errores /
+                  (juegoActual.aciertos + juegoActual.errores)) *
+                  100 +
+                '%'
+              "
+            >
+              <div class="progress-bar bg-danger">
+                {{
+                  (juegoActual.errores /
+                    (juegoActual.aciertos + juegoActual.errores)) *
+                    100
+                }}
+                %
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            (click)="irAInicio()"
+          >
+            Ir al inicio
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+            (click)="reiniciarJuego()"
+          >
+            Reiniciar juego
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+} }
+
+<!-- <pre>
+  Estado: {{ estado }}
+  juego actual: {{ juegoActual | json }}
+</pre> -->
