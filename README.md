@@ -6,7 +6,7 @@ Este proyecto representa los puntos 1, 2 y 3 del TP.
 
 ## Ejecutar el proyecto en modo desarrollador
 
-1. Situarse en alguna de las tres carpetas y ejecutar en la terminal el comando:
+1. Abrir la terminal ejecutar el siguiente comando:
 
 ```
 ng serve
