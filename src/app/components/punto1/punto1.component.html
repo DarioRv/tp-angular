@@ -19,7 +19,7 @@
           {{ producto.descripcion }}
         </p>
         <p class="card-text text-muted display-6">
-          {{ producto.precio }}
+          {{ producto.precio | currency }}
         </p>
         <button class="btn btn-primary" (click)="agregarCarrito(producto)">
           Añadir al carrito
@@ -34,6 +34,11 @@
       data-bs-toggle="modal"
       data-bs-target="#staticBackdrop"
     >
+      <span
+        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+      >
+        {{ carrito.length }}
+      </span>
       Mi carrito
       <i class="bi bi-cart-fill"></i>
     </button>
@@ -64,17 +69,37 @@
           <div class="modal-body">
             <!-- Lista de productos en el carrito -->
             @for (producto of carrito; track $index) {
-            <div
-              class="producto-carrito d-flex justify-content-between gap-3 mb-3"
-            >
-              <img
-                [src]="producto.img"
-                class="card-img-top img-fluid"
-                [alt]="producto.nombre"
-                [title]="producto.nombre"
-              />
-              <p class="fw-bold">{{ producto.nombre }}</p>
-              <p class="text-muted fs-2">{{ producto.precio }}</p>
+            <div class="producto-carrito row mb-3">
+              <div class="col-12 col-md-4">
+                <img
+                  [src]="producto.img"
+                  class="card-img-top img-fluid"
+                  [alt]="producto.nombre"
+                  [title]="producto.nombre"
+                />
+              </div>
+              <div class="col-12 col-md-8">
+                <div class="d-flexgap-2 row row-cols-12 row-sm-col-6">
+                  <p class="fw-bold text-center">{{ producto.nombre }}</p>
+                  <p class="text-muted fs-2 text-center">
+                    {{ producto.precio * producto.cantidad! | currency }}
+                  </p>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary" (click)="addUnit(producto)">
+                    <i class="bi bi-plus"></i>
+                  </button>
+                  <p class="text-muted m-0 text-center px-4 fw-bold fs-6">
+                    {{ producto.cantidad }}
+                  </p>
+                  <button
+                    class="btn btn-primary"
+                    (click)="removeUnit(producto)"
+                  >
+                    <i class="bi bi-dash"></i>
+                  </button>
+                </div>
+              </div>
             </div>
             } @empty {
             <div class="alert alert-info" role="alert">
@@ -82,7 +107,8 @@
             </div>
             }
             <div class="alert alert-success" role="alert">
-              El total es de: <span class="fw-bold">{{ calcularTotal() }}</span>
+              El total es de:
+              <span class="fw-bold">{{ totalCarrito | currency }}</span>
             </div>
           </div>
           <div class="modal-footer">

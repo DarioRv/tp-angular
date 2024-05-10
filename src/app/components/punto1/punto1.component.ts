@@ -1,22 +1,26 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 interface Producto {
+  id: number;
   nombre: string;
   descripcion: string;
   img: string;
   precio: number;
+  cantidad?: number;
 }
 
 @Component({
   selector: 'app-punto1',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './punto1.component.html',
   styleUrl: './punto1.component.css',
 })
 export class Punto1Component {
   productos: Producto[] = [
     {
+      id: 11,
       nombre: 'Computadora portátil Dell XPS 13 Plus',
       descripcion:
         'Laptop ultradelgada con procesador Intel Core i7, pantalla OLED de 13.4 pulgadas y duración de batería de hasta 12 horas.',
@@ -24,6 +28,7 @@ export class Punto1Component {
       precio: 2499.0,
     },
     {
+      id: 12,
       nombre: 'Smartphone Samsung Galaxy S23 Ultra',
       descripcion:
         'Teléfono inteligente con cámara de 200MP, pantalla AMOLED de 6.8 pulgadas y procesador Snapdragon 8 Gen 2.',
@@ -31,6 +36,7 @@ export class Punto1Component {
       precio: 1599.0,
     },
     {
+      id: 13,
       nombre: 'Tablet Apple iPad Air (5.ª generación)',
       descripcion:
         'Tablet con chip M1, pantalla Liquid Retina de 10.9 pulgadas y soporte para Apple Pencil.',
@@ -38,6 +44,7 @@ export class Punto1Component {
       precio: 699.0,
     },
     {
+      id: 14,
       nombre: 'Monitor curvo Samsung Odyssey G9',
       descripcion:
         'Monitor curvo de 49 pulgadas con resolución Super Ultrawide Dual QHD (5120 x 1440) y frecuencia de actualización de 240Hz.',
@@ -45,6 +52,7 @@ export class Punto1Component {
       precio: 2199.0,
     },
     {
+      id: 15,
       nombre: 'Teclado mecánico Corsair K100 RGB OPX',
       descripcion:
         'Teclado mecánico con interruptores OPX Optical, retroiluminación RGB y reposamuñecas magnético.',
@@ -52,6 +60,7 @@ export class Punto1Component {
       precio: 249.99,
     },
     {
+      id: 16,
       nombre: 'Mouse inalámbrico Logitech MX Master 3S',
       descripcion:
         'Mouse inalámbrico ergonómico con sensor de alta precisión, botones personalizables y hasta 90 días de autonomía de batería.',
@@ -59,6 +68,7 @@ export class Punto1Component {
       precio: 149.99,
     },
     {
+      id: 17,
       nombre: 'Unidad de estado sólido Samsung 980 Pro',
       descripcion:
         'SSD NVMe PCIe 4.0 Gen 4 con hasta 7,000 MB/s de lectura y 5,100 MB/s de escritura.',
@@ -66,6 +76,7 @@ export class Punto1Component {
       precio: 249.99,
     },
     {
+      id: 18,
       nombre: 'Tarjeta gráfica NVIDIA GeForce RTX 3080 Ti',
       descripcion:
         'Tarjeta gráfica con 12GB de memoria GDDR6X y arquitectura Ampere.',
@@ -73,6 +84,7 @@ export class Punto1Component {
       precio: 1199.0,
     },
     {
+      id: 19,
       nombre: 'Auriculares para juegos HyperX Cloud Alpha',
       descripcion:
         'Auriculares para juegos con controladores de 50 mm, micrófono desmontable y diseño cómodo.',
@@ -82,6 +94,7 @@ export class Punto1Component {
   ];
 
   carrito: Producto[] = [];
+  totalCarrito = 0;
 
   constructor() {}
 
@@ -90,19 +103,52 @@ export class Punto1Component {
    * @param producto Producto a agregar al carrito.
    */
   agregarCarrito(producto: Producto): void {
-    this.carrito.push(producto);
+    const productoEncontrado = this.carrito.find((p) => p.id === producto.id);
+    if (!productoEncontrado) {
+      producto.cantidad = 1;
+      this.carrito.push(producto);
+      this.calcularTotal();
+      return;
+    }
+
+    productoEncontrado.cantidad = productoEncontrado.cantidad! + 1;
   }
 
   /**
    * Calcula el total de los productos en el carrito.
-   * @returns Total de los productos en el carrito.
    */
-  calcularTotal(): number {
+  calcularTotal(): void {
     let total = 0;
     this.carrito.forEach((producto) => {
-      total += producto.precio;
+      total += producto.precio * producto.cantidad!;
     });
 
-    return total;
+    this.totalCarrito = total;
+  }
+
+  addUnit(producto: Producto): void {
+    const productoEncontrado = this.carrito.find((p) => p.id === producto.id);
+    if (productoEncontrado) {
+      productoEncontrado.cantidad = productoEncontrado.cantidad! + 1;
+    }
+    this.calcularTotal();
+  }
+
+  removeUnit(producto: Producto): void {
+    const productoEncontrado = this.carrito.find((p) => p.id === producto.id);
+    if (productoEncontrado) {
+      productoEncontrado.cantidad = productoEncontrado.cantidad! - 1;
+    }
+
+    if (productoEncontrado && productoEncontrado.cantidad! <= 0) {
+      this.quitarProducto(producto);
+    }
+
+    this.calcularTotal();
+  }
+
+  quitarProducto(producto: Producto): void {
+    this.carrito = this.carrito.filter((p) => p.id !== producto.id);
+    this.calcularTotal();
   }
 }
