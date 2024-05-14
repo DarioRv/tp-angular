@@ -1,0 +1,68 @@
+<h2>Alta de ticket</h2>
+<form #form class="border p-4 rounded bg-body-tertiary">
+  <div class="form-floating mb-3">
+    <input
+      type="text"
+      class="form-control"
+      id="dni"
+      name="dni"
+      placeholder="DNI"
+      required
+      [(ngModel)]="ticket.dni"
+    />
+    <label for="dni">DNI</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="number"
+      class="form-control"
+      id="precioReal"
+      name="precioReal"
+      placeholder="Precio real"
+      required
+      (change)="calcularPrecioCobrado()"
+      [(ngModel)]="ticket.precioReal"
+    />
+    <label for="precioReal">Precio Real</label>
+  </div>
+  <select
+    class="form-select mb-3"
+    name="tipoEspectador"
+    (change)="calcularPrecioCobrado()"
+    [(ngModel)]="ticket.tipoEspectador"
+  >
+    <option value="na" selected>Tipo Espectador</option>
+    <option value="l">Local</option>
+    <option value="e">Extranjero</option>
+  </select>
+  <div class="form-floating mb-3">
+    <input
+      type="date"
+      class="form-control"
+      id="fecha"
+      name="fecha"
+      placeholder="Fecha"
+      required
+      [(ngModel)]="ticket.fecha"
+    />
+    <label for="fecha">Fecha cobro</label>
+  </div>
+  @if (ticket.tipoEspectador === 'l' && ticket.precioReal !== 0) {
+  <div class="form-floating mb-3">
+    <input
+      type="number"
+      class="form-control"
+      id="precioCobrado"
+      name="precioCobrado"
+      placeholder="precio-cobrado"
+      required
+      readonly
+      [(ngModel)]="ticket.precioCobrado"
+    />
+    <label for="precioCobrado">Precio Cobrado</label>
+  </div>
+  }
+  <button class="btn btn-primary mx-auto" (click)="agregarTicket()">
+    Enviar
+  </button>
+</form>

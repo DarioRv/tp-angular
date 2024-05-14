@@ -1,6 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
+interface DetallesJuego {
+  iteracion: number;
+  aciertos: number;
+  errores: number;
+  modo: string;
+  palabra: string;
+  opciones: number[];
+  opcionCorrecta: number;
+}
+
 @Component({
   selector: 'app-punto2',
   standalone: true,
@@ -25,15 +35,7 @@ export class Punto2Component {
 
   estado: 'inicio' | 'jugando' | 'finalizado' = 'inicio';
 
-  juegoActual: {
-    iteracion: number;
-    aciertos: number;
-    errores: number;
-    modo: string;
-    palabra: string;
-    opciones: number[];
-    opcionCorrecta: number;
-  } = {
+  juegoActual: DetallesJuego = {
     iteracion: 0,
     aciertos: 0,
     errores: 0,
