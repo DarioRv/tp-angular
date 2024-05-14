@@ -3,7 +3,7 @@ import { Ticket } from '../../models/Ticket.class';
 import { TicketService } from '../../services/ticket.service';
 import { CommonModule } from '@angular/common';
 import { EspectadorPipe } from '../../pipes/espectador.pipe';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-listado',
@@ -23,7 +23,7 @@ export class ListadoComponent implements OnInit {
     totalRecaudado: 0,
   };
 
-  constructor(private ticketService: TicketService) {}
+  constructor(private ticketService: TicketService, private router: Router) {}
 
   ngOnInit(): void {
     this.tickets = this.ticketService.tickets;
@@ -58,5 +58,15 @@ export class ListadoComponent implements OnInit {
         this.resumen.totalEspectadoresLocal += 1;
       }
     });
+  }
+
+  eliminarTicket(id: number): void {
+    this.ticketService.eliminarTicket(id);
+    this.tickets = this.ticketService.tickets;
+    this.generarResumen();
+  }
+
+  editarTicket(id: number): void {
+    this.router.navigate(['formulario'], { queryParams: { id } });
   }
 }

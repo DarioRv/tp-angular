@@ -26,6 +26,11 @@ export const routes: Routes = [
         title: 'Fomulario ticket',
       },
       {
+        path: 'formulario/:id',
+        component: FormularioComponent,
+        title: 'Fomulario ticket',
+      },
+      {
         path: 'listado',
         component: ListadoComponent,
         title: 'Listado de tickets',

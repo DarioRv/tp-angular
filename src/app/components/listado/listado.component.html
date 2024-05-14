@@ -9,6 +9,7 @@
       <th scope="col">Precio Real</th>
       <th scope="col">Precio Cobrado</th>
       <th scope="col">DNI</th>
+      <th scope="col">Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,22 @@
       <td>{{ ticket.precioReal | currency }}</td>
       <td>{{ ticket.precioCobrado | currency }}</td>
       <td>{{ ticket.dni }}</td>
+      <td class="d-flex gap-3">
+        <button
+          class="btn btn-warning"
+          type="button"
+          (click)="editarTicket(ticket.id)"
+        >
+          Editar
+        </button>
+        <button
+          class="btn btn-danger"
+          type="button"
+          (click)="eliminarTicket(ticket.id)"
+        >
+          Eliminar
+        </button>
+      </td>
     </tr>
     }
   </tbody>
