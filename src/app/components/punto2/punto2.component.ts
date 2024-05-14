@@ -19,6 +19,7 @@ interface DetallesJuego {
   styleUrl: './punto2.component.css',
 })
 export class Punto2Component {
+  readonly iteracionesMaximas: number = 8;
   palabras = [
     'gato',
     'susurrar',
@@ -33,7 +34,8 @@ export class Punto2Component {
     'silla',
   ];
 
-  estado: 'inicio' | 'jugando' | 'finalizado' = 'inicio';
+  estado: 'seleccionando modo' | 'jugando' | 'finalizado' =
+    'seleccionando modo';
 
   juegoActual: DetallesJuego = {
     iteracion: 0,
@@ -56,9 +58,6 @@ export class Punto2Component {
     this.juegoActual.modo = modo;
     this.juegoActual.palabra =
       this.palabras[this.obtenerNumeroAleatorio(0, 10)];
-    this.juegoActual.iteracion = 0;
-    this.juegoActual.aciertos = 0;
-    this.juegoActual.errores = 0;
     this.juegoActual.opciones = this.generarOpciones();
     this.juegoActual.opcionCorrecta = this.obtenerOpcionCorrecta(
       this.juegoActual.palabra,
@@ -78,22 +77,21 @@ export class Punto2Component {
    * previamente y reiniciando las estadísticas.
    */
   reiniciarJuego() {
-    this.estado = 'jugando';
+    this.estado = 'seleccionando modo';
     const modoAnterior = this.juegoActual.modo;
     this.juegoActual.modo = modoAnterior;
     this.juegoActual.iteracion = 0;
     this.juegoActual.aciertos = 0;
     this.juegoActual.errores = 0;
-    this.juegoActual.palabra = '';
-    this.juegoActual.opciones = [];
-    this.juegoActual.opcionCorrecta = 0;
+    this.setPalabra();
   }
 
   /**
    * Cambia el estado del juego a 'inicio'.
    */
   irAInicio() {
-    this.estado = 'inicio';
+    this.estado = 'seleccionando modo';
+    this.reiniciarJuego();
   }
 
   /**
@@ -101,11 +99,16 @@ export class Punto2Component {
    * la palabra y las opciones a mostrar.
    */
   avanzarIteracion(): void {
-    if (this.juegoActual.iteracion == 7) {
+    if (this.juegoActual.iteracion == this.iteracionesMaximas - 1) {
       this.finalizarJuego();
       return;
     }
     this.juegoActual.iteracion += 1;
+    this.setPalabra();
+    this.estado = 'seleccionando modo';
+  }
+
+  setPalabra(): void {
     this.juegoActual.palabra =
       this.palabras[this.obtenerNumeroAleatorio(0, 10)];
     this.juegoActual.opciones = this.generarOpciones();
@@ -125,8 +128,10 @@ export class Punto2Component {
     if (opcion == this.juegoActual.opcionCorrecta) {
       this.juegoActual.aciertos += 1;
       this.avanzarIteracion();
+      alert('¡Correcto!');
     } else {
       this.juegoActual.errores += 1;
+      alert('¡Incorrecto!');
     }
   }
 

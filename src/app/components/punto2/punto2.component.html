@@ -1,4 +1,4 @@
-@switch (estado) { @case ('inicio') {
+@switch (estado) { @case ('seleccionando modo') {
 <section>
   <h2 class="text-center text-primary display-3 fw-bold my-5">
     Selecciona un modo de juego
@@ -62,7 +62,7 @@
   <div class="mt-5">
     <ul class="list-group w-25">
       <li class="list-group-item">
-        Progeso: {{ juegoActual.iteracion + 1 }}/8
+        Progeso: {{ juegoActual.iteracion }}/{{ iteracionesMaximas }}
       </li>
       <li class="list-group-item">Aciertos: {{ juegoActual.aciertos }}</li>
       <li class="list-group-item">Errores: {{ juegoActual.errores }}</li>
@@ -77,7 +77,9 @@
     >
       <div
         class="progress-bar"
-        [style]="'width:' + (juegoActual.iteracion * 100) / 8 + '%'"
+        [style]="
+          'width:' + (juegoActual.iteracion * 100) / iteracionesMaximas + '%'
+        "
       ></div>
     </div>
   </div>
@@ -149,7 +151,7 @@
                 {{
                   (juegoActual.aciertos /
                     (juegoActual.aciertos + juegoActual.errores)) *
-                    100
+                    100 | number
                 }}
                 %
               </div>
@@ -173,7 +175,7 @@
                 {{
                   (juegoActual.errores /
                     (juegoActual.aciertos + juegoActual.errores)) *
-                    100
+                    100 | number
                 }}
                 %
               </div>
