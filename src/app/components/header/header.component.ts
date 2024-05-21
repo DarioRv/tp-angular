@@ -19,5 +19,6 @@ export class HeaderComponent {
     { label: 'Punto 2', routerLink: 'juego' },
     { label: 'Formulario', routerLink: 'formulario' },
     { label: 'Listado', routerLink: 'listado' },
+    { label: 'Información de IP', routerLink: 'ip-info' },
   ];
 }

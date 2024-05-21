@@ -4,6 +4,7 @@ import { Punto1Component } from './components/punto1/punto1.component';
 import { Punto2Component } from './components/punto2/punto2.component';
 import { FormularioComponent } from './components/formulario/formulario.component';
 import { ListadoComponent } from './components/listado/listado.component';
+import { IpInfoComponent } from './components/ip-info/ip-info.component';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,11 @@ export const routes: Routes = [
         path: 'listado',
         component: ListadoComponent,
         title: 'Listado de tickets',
+      },
+      {
+        path: 'ip-info',
+        component: IpInfoComponent,
+        title: 'Información sobre IP'
       },
       { path: '**', redirectTo: 'productos', pathMatch: 'full' },
     ],

@@ -1,0 +1,70 @@
+<h1 class="fs-3 text-primary fw-bold">Información sobre IP</h1>
+<form class="mb-5">
+  <div class="mb-5">
+    <label for="ip">IP</label>
+    <input class="form-control" type="text" name="ip" id="ip" [(ngModel)]="ip">
+  </div>
+  <button class="btn btn-primary" (click)="onSubmit()">Obtener información</button>
+</form>
+
+
+@if (ipInfo) {
+  <h2 class="text-primary mb-3">Información de IP</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="text-center" scope="col" colspan="2">Información de la IP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">PAIS</th>
+        <td> {{ ipInfo.country }} </td>
+      </tr>
+      <tr>
+        <th scope="row">CIUDAD</th>
+        <td> {{ipInfo.city}} </td>
+      </tr>
+      <tr>
+        <th class="text-center" scope="row" colspan="2">Información de la ubicación</th>
+      </tr>
+      <tr>
+        <th scope="row">Fecha del lugar</th>
+        <td colspan="2"> {{ ipInfo.timezone.date | date:'dd/MM/yyyy' }} </td>
+      </tr>
+      <tr>
+        <th scope="row">Hora del lugar</th>
+        <td colspan="2"> {{ ipInfo.timezone.time }} </td>
+      </tr>
+      <tr>
+        <th scope="row">Zona horaria</th>
+        <td colspan="2"> {{ ipInfo.timezone.name }} </td>
+      </tr>
+      <tr>
+        <td colspan="2">Ir al lugar <a [href]="'https://maps.google.com/?q='+ ipInfo.latitude + ',' + ipInfo.longitude " target="_blank">LINK</a></td>
+      </tr>
+    </tbody>
+  </table>
+}
+
+@if (addressInfo) {
+  <h2 class="text-primary mb-3">Información de dirección</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Calle</th>
+        <th scope="col">Numero</th>
+        <th scope="col">Ciudad</th>
+        <th scope="col">Provincia</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td> {{ addressInfo.address }} </td>
+        <td> {{ addressInfo.addressnumber }} </td>
+        <td> {{ addressInfo.subregion }} </td>
+        <td> {{ addressInfo.region }} </td>
+      </tr>
+    </tbody>
+  </table>
+}
